@@ -9,6 +9,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,9 +18,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private Fruit[] fruits = {new Fruit("Apple",R.drawable.apple),new Fruit("Banana",R.drawable.banana),
+            new Fruit("strawberry",R.drawable.strawberry),new Fruit("watermallon",R.drawable.watermallon),
+            new Fruit("cherry",R.drawable.cherry),new Fruit("grape",R.drawable.grape)
+            ,new Fruit("mango",R.drawable.mango)};
+    private ArrayList<Fruit> fruitArrayList = new ArrayList<>();
+    private FruitAdapter fruitAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +68,20 @@ public class MainActivity extends AppCompatActivity {
                         }).show();
             }
         });
+        initFruits();
+        RecyclerView recyclerView = findViewById(R.id.recycle_view);
+        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+        recyclerView.setLayoutManager(layoutManager);
+        fruitAdapter = new FruitAdapter(fruitArrayList);
+        recyclerView.setAdapter(fruitAdapter);
+    }
+
+    private void initFruits(){
+        fruitArrayList.clear();
+        Random random = new Random();
+        for(int i = 0;i<50;i++){
+            fruitArrayList.add(fruits[random.nextInt(fruits.length)]);
+        }
     }
 
     @Override
